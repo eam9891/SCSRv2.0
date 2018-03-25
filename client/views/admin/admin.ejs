@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SCSR</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!------------------------------ Javascript Libraries ------------------------------>
+
+    <!-- JQuery Javascript Library -->
+    <script src="jquery-3.3.1.min.js"></script>
+
+    <!-- JQuery UI Javascript Library -->
+    <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+    <!-- Bootstrap 4.0 JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+    <!------------------------------ CSS Libraries ------------------------------------->
+
+    <!-- Font Awesome CSS Library, Icons and Fonts -->
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
+
+    <!-- Latest compiled and minified Bootstrap 4.0 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!-- Latest compiled and minified Bootstrap Cyborg Theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.3/cyborg/bootstrap.min.css">
+
+    <!-- JQuery UI CSS Library -->
+    <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.css">
+
+
+    <!------------------------------ Custom CSS Libraries ------------------------------>
+
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="serial-monitor.css">
+
+
+    <!-- Note: All custom javascript is loaded after the html is rendered at the end of our main section -->
+
+
+    <style>
+        #container {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: flex-end;
+        }
+        video {
+            background: #000000 none repeat scroll 0 0;
+            border: 1px solid #aaa;
+        }
+        .overlayWrapper {
+            position: relative;
+        }
+        .overlayWrapper .overlay {
+            position: absolute;
+            top: 0;
+            left: 5px;
+        }
+        p {
+            margin: 0.125em;
+        }
+        .nav-side-menu
+    </style>
+</head>
+<nav class="fixed-top navbar navbar-expand-lg bg-dark navbar-dark" style="padding-left: 0;">
+    <!-- Header Name -->
+    <a class="navbar-brand" href="/" style="width: 250px; text-align: center;">ServiceRobot</a>
+
+    <!-- Toggler / collapsable Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbutton">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="navbutton collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+
+
+            <!--
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            -->
+
+        </ul>
+    </div>
+</nav>
+<div class="nav-side-menu">
+
+    <div class="menu-list">
+        <ul class="menu-content collapse navbutton ">
+            <li id="dashboard">
+                <a>
+                    <i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard
+                </a>
+            </li>
+            <!--
+            <li id="profile">
+                <a>
+                    <i class="fa fa-user fa-lg"></i>&nbsp; Profile
+                </a>
+            </li>
+            -->
+            <!-- Remote Control -->
+            <li id="remoteControl"><a><i class="fa fa-keyboard-o fa-lg"></i>&nbsp; Remote Control</a></li>
+
+
+            <!-- Serial Monitor -->
+            <li id="serialMonitor"><a><i class="fa fa-usb fa-lg"></i>&nbsp; Serial Monitor</a></li>
+
+            <li id="users"><a href="#"><i class="fa fa-users fa-lg"></i>&nbsp; Users</a></li>
+
+            <!-- ToDo: Hook this up to the backend -->
+            <li data-toggle="collapse" data-target="#db" class="collapsed">
+                <a href="#"><i class="fa fa-database fa-lg"></i>&nbsp; Database <span class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse" id="db">
+                <!--<li class="active"><a href="#">Active Example</a></li>-->
+                <li><a href="#">Create Table</a></li>
+                <li><a href="#">View DB Structure</a></li>
+            </ul>
+
+
+            <!-- UV4L Home Page -->
+            <li><a target="_blank" href="http://<%= config.server.host %>:8090"><i class="fa fa-external-link fa-lg"></i>&nbsp; UV4L Home Page</a></li>
+
+            <!-- UV4L Control Panel -->
+            <li><a target="_blank" href="http://<%= config.server.host %>:8090/panel" ><i class="fa fa-wrench fa-lg"></i>&nbsp; UV4L Control Panel</a></li>
+
+            <!-- Logout -->
+            <li><a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp; Logout </a></li>
+        </ul>
+    </div>
+</div>
+<main id="main" class="container-fluid" style="margin-top: 53px;">
+
+
+    <!-- This is where all views are displayed -->
+    <%- include dashboard.ejs %>
+    <%- include remote-control.ejs %>
+    <%- include serial-monitor.ejs %>
+
+
+
+</main>
+
+<script type="text/javascript">
+
+    var BASE_URL = "<%= config.server.host %>";
+    var WS_PORT  = "<%= config.server.port %>";
+
+</script>
+<script type="text/javascript" src="dashboard.js"></script>
+<script type="text/javascript" src="remote-control.js"></script>
+<script type="text/javascript" src="serial-monitor.js"></script>
+<script type="text/javascript" src="webrtc-control.js"></script>
+</html>

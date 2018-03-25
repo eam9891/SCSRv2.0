@@ -1,0 +1,94 @@
+.input-group-text {
+    color: white;
+}
+#msg.form-control {
+    background-color: #2c2c2b;
+    padding: 0;
+    border: 1px solid #2c2c2b;
+    color: whitesmoke;
+
+}
+#msg:focus {
+    background-color: #2c2c2b;
+    outline: none;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+
+input.form-control {
+    background-color: #2c2c2b;
+    padding: 0;
+    border: 1px solid #2c2c2b;
+    color: whitesmoke;
+
+}
+input.form-control:focus {
+    background-color: #2c2c2b;
+    outline: none;
+}
+.input-group-prepend .input-group-text {
+    background-color: #2c2c2b;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+
+#log {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    width: 100%;
+    height: calc(100% - 50px);
+    color: white;
+    text-align: left;
+    overflow-y: scroll;
+    padding-left: 5px;
+}
+#log::-webkit-scrollbar {
+    display: none;
+}
+
+
+.ui-widget {
+    font-family: Verdana,Arial,sans-serif;
+}
+
+.ui-widget-content {
+    background: #222222;
+    border: 1px solid black;
+    color: whitesmoke;
+}
+
+.ui-dialog {
+    left: 0;
+    outline: 0 none;
+    padding: 0 !important;
+    position: absolute;
+    top: 0;
+    border: 1px solid black;
+}
+
+
+
+.ui-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    overflow: auto;
+    position: relative;
+    padding: 0 !important;
+}
+
+.ui-widget-header {
+    background: #0143de;
+    border: 0;
+    color: #fff;
+    font-weight: normal;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 5px .5em;
+    position: relative;
+    font-size: 14px;
+
+}

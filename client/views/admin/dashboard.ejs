@@ -1,0 +1,149 @@
+<style>
+    /*@-webkit-keyframes cpu-progress {
+        from { stroke-dashoffset: 339.292; }
+    }
+    @keyframes cpu-progress {
+        from { stroke-dashoffset: 339.292; }
+    }
+
+
+    @-webkit-keyframes cpu-progress-2 {
+        from { stroke-dashoffset: 339.292; }
+        to { stroke-dashoffset:  }
+    }
+    @keyframes cpu-progress-2 {
+        from { stroke-dashoffset: 339.292; }
+        to { stroke-dashoffset:  }
+    }
+    @-webkit-keyframes cpu-progress-3 {
+        from { stroke-dashoffset: 339.292; }
+        to { stroke-dashoffset:  }
+    }
+    @keyframes cpu-progress-3 {
+        from { stroke-dashoffset: 339.292; }
+        to { stroke-dashoffset:  }
+    }*/
+
+
+</style>
+
+<div id="dash-container">
+    <!-- First row, shows system information and load averages -->
+    <div class="row" style="margin-top: 15px;">
+        <div class="col-sm-4">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header" style="background-color: #313131;">System Information</div>
+                <div class="card-body" id="sysinfo" style="background-color: #3b3b3b;">
+                    <p>
+                        <span>Architecture: </span>
+                        <span id="cpuarch" style="color: #2bff15;"></span>
+                    </p>
+                    <p>
+                        <span>Platform: </span>
+                        <span id="platform" style="color: #2bff15;"></span>
+                    </p>
+                    <p>
+                        <span>Hostname: </span>
+                        <span id="hostname" style="color: #2bff15;"></span>
+                    </p>
+                    <p>
+                        <span>Uptime: </span>
+                        <span id="uptime" style="color: #2bff15;"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header" style="background-color: #313131;">CPU Load Averages</div>
+                <div class="card-body" style="background-color: #3b3b3b;">
+                    <div class="row">
+                        <div class="col-4">
+
+                            <!-- CPU 1 minute avg load -->
+                            <p class="text-center"> 1 Min </p>
+                            <div class="cpu-meter">
+                                <svg class="cpu-progress" width="120" height="60">
+                                    <circle class="cpu-progress-background" cx="60" cy="60" r="53" fill="none" stroke-width="14" ></circle>
+                                    <circle class="cpu-progress-value" cx="60" cy="60" r="53" fill="none" stroke-width="14" ></circle>
+                                </svg>
+                            </div>
+                            <div class="cpu-progress-text" id="load1"></div>
+
+                        </div>
+                        <div class="col-4">
+
+                            <!-- CPU 5 minute avg load -->
+                            <p class="text-center"> 5 Min </p>
+                            <div class="cpu-meter">
+                                <svg class="cpu-progress-2" width="120" height="60">
+                                    <circle class="cpu-progress-background" cx="60" cy="60" r="53" fill="none" stroke-width="14" ></circle>
+                                    <circle class="cpu-progress-value" cx="60" cy="60" r="53" fill="none" stroke-width="14" ></circle>
+                                </svg>
+                            </div>
+                            <div class="cpu-progress-text" id="load5"></div>
+
+                        </div>
+                        <div class="col-4">
+
+                            <!-- CPU 10 minute avg load -->
+                            <p class="text-center"> 10 Min </p>
+                            <div class="cpu-meter">
+                                <svg class="cpu-progress-3" width="120" height="60">
+                                    <circle class="cpu-progress-background" cx="60" cy="60" r="53" fill="none" stroke-width="14" ></circle>
+                                    <circle class="cpu-progress-value" cx="60" cy="60" r="53" fill="none" stroke-width="14" ></circle>
+                                </svg>
+                            </div>
+                            <div class="cpu-progress-text" id="load10"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second row, shows network and ram memory -->
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header" style="background-color: #313131;">Network</div>
+                <div class="card-body" style="background-color: #3b3b3b;">
+
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr id="netinfo-head">
+                                <th scope="col" style="border-top: 0;">Address</th>
+                                <th scope="col" style="border-top: 0;">Netmask</th>
+                                <th scope="col" style="border-top: 0;">Family</th>
+                                <th scope="col" style="border-top: 0;">MAC</th>
+                                <th scope="col" style="border-top: 0;">Scope ID</th>
+                                <th scope="col" style="border-top: 0;">Internal</th>
+                                <th scope="col" style="border-top: 0;">CIDR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="network">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header" style="background-color: #313131;">Memory</div>
+                <div class="card-body" style="background-color: #3b3b3b;">
+                    <p>Total Memory: <span id="totalmem"></span></p>
+                    <p>Used Memory: <span id="usedmem"></span></p>
+                    <p>Free Memory: <span id="freemem"></span></p>
+                    <div class="progress">
+                        <div id="memory" class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
