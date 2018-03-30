@@ -138,7 +138,7 @@
             <li><a target="_blank" href="http://<%= config.server.host %>:8090/panel" ><i class="fa fa-wrench fa-lg"></i>&nbsp; UV4L Control Panel</a></li>
 
             <!-- Logout -->
-            <li><a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp; Logout </a></li>
+            <li id="logout"><a><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp; Logout </a></li>
         </ul>
     </div>
 </div>
@@ -160,6 +160,7 @@
     var WS_PORT  = "<%= config.server.port %>";
 
 </script>
+<script type="text/javascript" src="admin.js"></script>
 <script type="text/javascript" src="dashboard.js"></script>
 <script type="text/javascript" src="remote-control.js"></script>
 <script type="text/javascript" src="serial-monitor.js"></script>

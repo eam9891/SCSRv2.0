@@ -1,22 +1,12 @@
 // config/passport.js
-
-// load all the things we need
-var LocalStrategy   = require('passport-local').Strategy;
-
-// load up the user model
-var sql = require('mariasql');
-var bcrypt = require('bcrypt-nodejs');
-var dbconfig = require('./database');
-
-
-
 // Expose this function to our server app using module.exports
-module.exports = function(passport) {
+module.exports = function(passport, mysql, bcrypt, LocalStrategy) {
 
 
     // Start a new sql connection to our database
-    var mysql = new sql(dbconfig.connection);
-    //mysql.query('USE ?', dbconfig.database);
+    //var mysql = new sql(dbconfig.connection);
+
+
 
     // Passport Session Setup: =================================================
     // Required for persistent login sessions
@@ -29,8 +19,8 @@ module.exports = function(passport) {
 
     // Used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        mysql.query("SELECT * FROM users WHERE id = ? ",[id], function(err, rows){
-            done(err, rows[0]);
+        mysql.query("SELECT * FROM users WHERE id = ? ",[id], function(error, rows){
+            done(error, rows);
         });
     });
 
@@ -52,13 +42,13 @@ module.exports = function(passport) {
 
                 // If there was an error
                 if (err) {
-                    mysql.end();        // End the mysql connection
+
                     return done(err);   // Return the error
                 }
 
                 // If the username is already taken
                 if (rows.length) {
-                    mysql.end();        // End the mysql connection
+
                     return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
                 } else {
 
@@ -77,8 +67,7 @@ module.exports = function(passport) {
                         // Set the new user id into our user object, then return the user object
                         newUserMysql.id = rows.insertId;
 
-                        // End the mysql connection
-                        mysql.end();
+
 
                         // Return the new user object
                         return done(null, newUserMysql);
@@ -104,45 +93,43 @@ module.exports = function(passport) {
         },
         function(req, username, password, done) { // Callback function with username and password from our form
 
-            // Query the database for the username
-            mysql.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows) {
 
-                // If there was an error
-                if (err) {
 
-                    // End the mysql connection
-                    mysql.end();
+                // Query the database for the username
+                mysql.query("SELECT * FROM users WHERE username = ?",[username], function(error, rows) {
 
-                    // Return the error
-                    return done(err);
-                }
+                    // If there was an error
+                    if (error) {
+                        // Return the error
+                        return done(error);
+                    }
 
-                // If no user is found
-                if (!rows.length) {
+                    // If no user is found
+                    if (!rows.length) {
 
-                    // End the mysql connection
-                    mysql.end();
+                        console.log('incorrect username');
 
-                    // req.flash is the way to set flashdata using connect-flash
-                    return done(null, false, req.flash('loginMessage', 'That username or password is incorrect.'));
-                }
+                        // req.flash is the way to set flashdata using connect-flash
+                        return done(null, false, req.flash('loginMessage', 'That username or password is incorrect.'));
+                    }
 
-                // If the user is found but the password is wrong
-                if (!bcrypt.compareSync(password, rows[0].password)) {
+                    // If the user is found but the password is wrong
+                    if (!bcrypt.compareSync(password, rows[0].password)) {
 
-                    // End the mysql connection
-                    mysql.end();
+                        console.log('incorrect password');
 
-                    // create the loginMessage and save it to session as flashdata
-                    return done(null, false, req.flash('loginMessage', 'That username or password is incorrect.'));
-                }
+                        // create the loginMessage and save it to session as flashdata
+                        return done(null, false, req.flash('loginMessage', 'That username or password is incorrect.'));
+                    }
 
-                // If we got here, login was successful
-                // Set the user in a variable, close the connection, and return the user
-                var user = rows[0];
-                mysql.end();
-                return done(null, user);
-            });
+
+                    console.log(rows[0]);
+
+                    return done(null, rows[0]);
+                });
+
+
+
 
 
 

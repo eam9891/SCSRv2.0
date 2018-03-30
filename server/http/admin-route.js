@@ -13,7 +13,7 @@ module.exports = function(server, config) {
 
         // Render the default admin view
         res.render('admin/admin.ejs', {
-            user : req.user, // pass user to template
+            user : req.user[0], // pass user to template
             config: config   // pass config to template
         });
 
@@ -23,10 +23,10 @@ module.exports = function(server, config) {
     function isLoggedInAdmin(req, res, next) {
 
         // if user is authenticated in the session and an admin, carry on
-        if (req.isAuthenticated() && req.user.role === "admin")
+        if (req.isAuthenticated() && req.user[0].role === "admin")
             return next();
 
-        // if they aren't, destroy the sesion and redirect them to the home page
+        // if they aren't, destroy the session and redirect them to the home page
         req.session.destroy();
         res.redirect('/');
     }

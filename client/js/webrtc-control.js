@@ -1,6 +1,6 @@
 
-var signalling_server_hostname = "192.168.0.136";
-var signalling_server_address = "192.168.0.136:8090";
+var signalling_server_hostname = BASE_URL;
+var signalling_server_address = BASE_URL + ":8090";
 //var signalling_server_address = signalling_server_hostname + ':' + (location.port || (location.protocol === 'https:' ? 443 : 80));
 var isFirefox = typeof InstallTrigger !== 'undefined';// Firefox 1.0+
 
@@ -631,6 +631,14 @@ function unselect_remote_hw_vcodec() {
 }
 
 function singleselection(name, id) {
+    if (document.getElementById('cast_camera').checked) {
+        $('#local-video').removeClass('display-none');
+        $('#local-video-overlay').removeClass('display-none');
+    } else {
+        $('#local-video').addClass('display-none');
+        $('#local-video-overlay').addClass('display-none');
+    }
+
     var old = document.getElementById(id).checked;
     var elements = document.getElementsByName(name);
     for (var i = 0; i < elements.length; i++) {
@@ -643,6 +651,7 @@ function singleselection(name, id) {
      unselect_remote_hw_vcodec();
      }
      */
+
 }
 
 

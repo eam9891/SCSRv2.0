@@ -31,7 +31,7 @@ module.exports = function(server, passport, os) {
 function isLoggedInAdmin(req, res, next) {
 
     // if user is authenticated in the session and an admin, carry on
-    if (req.isAuthenticated() && req.user.role === "admin")
+    if (req.isAuthenticated() && req.user[0].role === "admin")
         return next();
 
     // if they aren't, destroy the sesion and redirect them to the home page

@@ -17,18 +17,38 @@ var flash        = require('connect-flash');                //
 var path         = require('path');                         //
 var os           = require('os');                           //
 var chalk        = require('chalk');                        // Lib for CLI colors
+var bcrypt       = require('bcrypt-nodejs');
+var sql          = require('mysql');
 var webcam       = require('./server/webcam/webcam');
 
 /** Get all configuration files */
-require('./config/passport')(passport);                     // Passport config, pass in passport object
-var config = require('./config/server-config');             // Main Configuration File
+var config       = require('./config/server-config');       // Main Configuration File
+var db_config    = require('./config/database');
 
 
 /** Set up http and websocket server */
 var express      = require('express');                      //
 var server       = express();
 var port         = config.server.port;
-var expressWS    = require('express-ws')(server);
+require('express-ws')(server);
+
+
+/** Set up database connection objects */
+//var sql = require('mariasql');
+var mysql = sql.createConnection(db_config.connection);
+mysql.connect(function(error) {
+    if (error) console.log(error);
+    console.log("Connected!");
+    mysql.query('USE ' + db_config.database, function (error) {
+        if (error) console.log(error);
+    });
+});
+
+
+
+/** Set up passport and local strategy objects */
+var LocalStrategy = require('passport-local').Strategy;
+require('./config/passport')(passport, mysql, bcrypt, LocalStrategy); // Passport config, pass in dependencies
 
 
 /** Set up our express application */
@@ -58,6 +78,7 @@ require('./server/http/login-route.js')(server, passport);
 require('./server/http/logout-route.js')(server);
 require('./server/http/signup-route.js')(server, passport);
 require('./server/http/admin-route.js')(server, config);
+require('./server/http/profile-route.js')(server);
 require('./server/http/dashboard-route.js')(server, passport, os);
 
 

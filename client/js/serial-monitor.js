@@ -5,6 +5,7 @@ var host = "ws://" + BASE_URL + ":" + WS_PORT;
 var serialMonitorBtn = $('#serialMonitor');
 var consoleDiv = $("#console");
 
+
 consoleDiv.dialog({
     autoOpen: false,
     height: 570,
@@ -20,11 +21,6 @@ consoleDiv.on("dialogbeforeclose", function() {
 
 serialMonitorBtn.click(function() {
     consoleDiv.dialog("open");
-});
-
-serialMonitorBtn.click(function() {
-    //eTerminal.dialog({});
-    //eTerminal.show();
     serialMonitorBtn.addClass("active");
     openSerialMonitor();
 });

@@ -129,7 +129,7 @@ html, body {
         display: block;
     }
     #main {
-        width:calc(100% - 250px);
+        width: calc(100% - 250px);
         float: right;
     }
 }

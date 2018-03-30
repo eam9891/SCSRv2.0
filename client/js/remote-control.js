@@ -6,6 +6,7 @@ var dashboardDiv     = $('#dash-container');
 var stopCam          = $('#stopCam');
 var startCam         = $('#startCam');
 var restartCam       = $('#restartCam');
+var castLocalCam     = $('#cast_camera');
 var websocket;
 
 // Remote control button click handler
@@ -43,8 +44,25 @@ stopCam.click(function () {
 
 // Restart camera server button click handler
 restartCam.click(function () {
-    websocket.send('cam-restart');
+    //websocket.send('cam-restart');
+    closeWebSocket();
+    setTimeout(function () {
+        openWebSocket();
+    }, 2000);
 });
+
+// Cast local camera button click handler
+function openLocalCam() {
+
+    if (castLocalCam.checked) {
+        $('#local-video').removeClass('display-none');
+        $('#local-video-overlay').removeClass('display-none');
+    } else {
+        $('#local-video').addClass('display-none');
+        $('#local-video-overlay').addClass('display-none');
+    }
+
+}
 
 // Convert a buffer to string
 function ab2str(buf) {
@@ -86,6 +104,14 @@ function openWebSocket() {
     websocket.onclose = function (p1) {
         websocket.send('cam-stop');
     }
+}
+
+function closeWebSocket(){
+    if (websocket !== null) {
+        websocket.close();
+        websocket = null;
+    }
+
 }
 
 // Write messages to the screen

@@ -19,7 +19,7 @@ boolean collisionDetection() {
     delayMicroseconds(10);
     digitalWrite(trigPin, LOW);
     duration = pulseIn(echoPin, HIGH);      // Reads the echoPin, returns the sound wave travel time in microseconds
-    distance = duration * 0.034 / 2;        // Calculate the distance
+    distance = duration * 0.034 / 2;        // Calculate the distance in cm
     if (distance < 30) {
         collisionDetected = true;
     }

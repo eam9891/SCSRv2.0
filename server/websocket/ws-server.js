@@ -12,7 +12,7 @@ module.exports = function(server, webcam, config, chalk) {
     server.ws('/', function(client, req) {
 
         // Authenticate for admin only
-        if (!req.isAuthenticated() || req.user.role !== "admin") {
+        if (!req.isAuthenticated() || req.user[0].role !== "admin") {
             req.close();
         }
 
@@ -62,7 +62,7 @@ module.exports = function(server, webcam, config, chalk) {
                     stopCam();
                     setTimeout(function () {
                         startCam();
-                    }, 2000);
+                    }, 2500);
 
                     break;
 
