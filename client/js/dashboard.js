@@ -1,24 +1,5 @@
-var dashboardBtn = $('#dashboard');
-
 // Populate stats on initial page load
 getStats();
-
-// Dashboard button click handler
-dashboardBtn.click( function () {
-
-    // Remote display:none css selector, and add it to every other view
-    remoteControlDiv.addClass('display-none');
-    dashboardDiv.removeClass('display-none');
-
-    // Add the css class for active button highlighting
-    remoteControlBtn.removeClass('active');
-    dashboardBtn.addClass('active');
-
-
-    // Call our Ajax function to populate numbers
-    getStats();
-});
-
 
 
 // Ajax post request to /dashboard rest endpoint

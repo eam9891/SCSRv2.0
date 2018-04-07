@@ -118,6 +118,10 @@
             <!-- Serial Monitor -->
             <li id="serialMonitor"><a><i class="fa fa-usb fa-lg"></i>&nbsp; Serial Monitor</a></li>
 
+            <!-- Arduino -->
+            <li id="arduino"><a><i class="fa fa-microchip fa-lg"></i>&nbsp; Arduino</a></li>
+
+            <!-- ToDo: Users table -->
             <li id="users"><a href="#"><i class="fa fa-users fa-lg"></i>&nbsp; Users</a></li>
 
             <!-- ToDo: Hook this up to the backend -->
@@ -149,6 +153,7 @@
     <%- include dashboard.ejs %>
     <%- include remote-control.ejs %>
     <%- include serial-monitor.ejs %>
+    <%- include upload.ejs%>
 
 
 
@@ -161,8 +166,14 @@
 
 </script>
 <script type="text/javascript" src="admin.js"></script>
+
+<script type="text/javascript" src="ws-client.js"></script>
 <script type="text/javascript" src="dashboard.js"></script>
-<script type="text/javascript" src="remote-control.js"></script>
-<script type="text/javascript" src="serial-monitor.js"></script>
+<!--<script type="text/javascript" src="remote-control.js"></script>
+<script type="text/javascript" src="serial-monitor.js"></script>-->
 <script type="text/javascript" src="webrtc-control.js"></script>
+<script type="text/javascript" src="arduino.js"></script>
+<script>
+    openWebSocket();
+</script>
 </html>

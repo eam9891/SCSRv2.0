@@ -1,36 +1,38 @@
-module.exports = function Webcam() {
-    const exec = require('child_process').exec;
+module.exports = function (shell) {
+    var Webcam = {};
 
-    function startCam() {
+    /**
+     * Start the usb webcam streaming server (uv4l-webrtc)
+     * This function calls the start_stream.sh bash script,
+     * which will start the uv4l-webrtc server
+     */
+     Webcam.start = function() {
+        // The shell exec command to run our script, asynchronously, and silent if possible
+        var child = shell.exec('/home/pi/SCSR/server/webcam/start_stream.sh', {async:true, silent:true});
 
-        const startcam = exec('bash start_stream.sh');
+        // On error, capture and run this function
+        child.stderr.on('data', function (stderr) {
 
-        startcam.stdout.on('data', function(data){
-            //console.log(data);
-            //console.log(data.substring(0, 8));
-            if (data.substring(0, 8) === "<alert>") {
+            if (stderr.substring(0,7) === "<error>") {
+                console.log(chalk.red('uv4l stderr:'));
+                console.log(stderr);
                 setTimeout(function () {
-                    startCam();
-                }, 1000);
-
+                    start();
+                }, 2000);
             }
-            // sendBackInfo();
+
         });
 
-        startcam.stderr.on('data', function(data){
-            //console.log(data);
-            if (data === "<error> [core] Device not found or access denied 046d:081b") {
-                setTimeout(function () {
-                    startCam();
-                }, 1000);
+    };
+    Webcam.stop = function() {
+        shell.exec('/home/pi/SCSR/server/webcam/stop_stream.sh');
+    };
 
-            }
-            // triggerErrorStuff();
-        });
-    }
-    function stopCam() {
-
-        const stopcam = exec('bash stop_stream.sh');
-    }
+    return Webcam;
 };
+
+
+
+//module.exports.startCam = start;
+//module.exports.stopCam = stop;
 

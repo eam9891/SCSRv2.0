@@ -1,5 +1,6 @@
-module.exports = function(server, webcam, config, chalk) {
+module.exports = function(server, webcam, config, chalk, shell) {
 
+    var uploading = false;
 
     var SerialPort = require("serialport");
     var serial = new SerialPort(config.serial.path, {baudRate : config.serial.baud});
@@ -8,7 +9,7 @@ module.exports = function(server, webcam, config, chalk) {
     // Array of active connections
     var connections = [];
 
-    // Endpoint for WebSocket server, requests look like ws://<IP/Domain>/
+    // Endpoint for WebSocket server, requests look like ws://<IP or Domain>/
     server.ws('/', function(client, req) {
 
         // Authenticate for admin only
@@ -34,7 +35,8 @@ module.exports = function(server, webcam, config, chalk) {
 
                 // A future possibility, check out avrgirl-arduino
                 case "upload":
-                    client.send(JSON.stringify("Upload Command Received, this would be cool to implement!"));
+                    client.send('{"type":"String","uploadCmd":"Upload received, starting compile process..."}');
+                    programArduino();
                     break;
 
                 // Show all connected users
@@ -48,21 +50,26 @@ module.exports = function(server, webcam, config, chalk) {
 
                 // Start/Show webcam stream
                 case "cam-start":
-                    startCam();
-
+                    webcam.start();
                     break;
 
                 // Start/Show webcam stream
                 case "cam-stop":
-                    stopCam();
-
+                    webcam.stop();
+                    serial.close(function (error) {
+                       console.log(error);
+                    });
                     break;
 
                 case "cam-restart":
-                    stopCam();
+                    webcam.stop();
+                    serial.close(function (error) {
+                        console.log(error);
+                    });
+
                     setTimeout(function () {
-                        startCam();
-                    }, 2500);
+                        webcam.start();
+                    }, 1000);
 
                     break;
 
@@ -88,11 +95,20 @@ module.exports = function(server, webcam, config, chalk) {
 
     });
 
-    function broadcast(data) {
-        for(myConnection in connections) {
-            connections[myConnection].send(JSON.stringify(data));
-            //connections[myConnection].send(data);
+    function broadcast(data, stringify) {
+        if (stringify) {
+            for(myConnection in connections) {
+                connections[myConnection].send(JSON.stringify(data));
+                //connections[myConnection].send(data);
+            }
+        } else {
+            for(myConnection in connections) {
+                connections[myConnection].send(data);
+                //connections[myConnection].send(data);
+            }
         }
+
+
     }
 
 
@@ -111,46 +127,39 @@ module.exports = function(server, webcam, config, chalk) {
     serial.on('readable', function () {
         var data = serial.read();
         console.log('Serial Message: ' + data);
-        broadcast(data);
+        broadcast(data, true);
     });
 
     // If the serial port closes, wait .5s and reopen it
     serial.on('close', function () {
-        setTimeout(function () {
-            serial.open();
-        }, 500);
+
+        if (uploading === false) {
+            setTimeout(function () {
+                serial.open();
+            }, 500);
+        }
+
 
     });
 
-
-    const shell = require('shelljs');
-
-    /**
-     * Start the usb webcam streaming server (uv4l-webrtc)
-     * This function calls the start_stream.sh bash script,
-     * which will start the uv4l-webrtc server
-     */
-    function startCam() {
-        // The shell exec command to run our script, asynchronously, and silent if possible
-        var child = shell.exec('/home/pi/SCSR/server/webcam/start_stream.sh', {async:true, silent:true});
-
-        // On error, capture and run this function
-        child.stderr.on('data', function (stderr) {
-
-            if (stderr.substring(0,7) === "<error>") {
-                console.log(chalk.red('uv4l stderr:'));
-                console.log(stderr);
-                setTimeout(function () {
-                    startCam();
-                }, 2000);
-            }
-
+    function programArduino() {
+        uploading = true;
+        serial.close(function (error) {
+            console.log(error);
         });
 
+        var child = shell.exec('sudo make upload -C /home/pi/SCSR/arduino/motorDriver/', {async:true}, function(code, stdout, stderr) {
+            broadcast(stdout);
+            broadcast(stderr);
+            console.log(code);
+        });
+
+        setTimeout(function () {
+            serial.open();
+        }, 2000);
+        uploading = false;
     }
-    function stopCam() {
-        shell.exec('/home/pi/SCSR/server/webcam/stop_stream.sh');
-    }
+
 
 
 
