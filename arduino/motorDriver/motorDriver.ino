@@ -6,6 +6,11 @@ String piMsg;
 String motorMsg;
 boolean isMoving = false;
 
+
+/*
+    Arduino setup function
+    Sets up pins and serial ports
+*/
 void setup() {
     pinMode(trigPin, OUTPUT);               // Sets the trigPin as an Output
     pinMode(echoPin, INPUT);                // Sets the echoPin as an Input
@@ -13,6 +18,12 @@ void setup() {
     Serial1.begin(115200);                  // Setup serial communication with motor controller
 }
 
+
+
+/*
+  Collision Detection Function
+  Return true if an object is within the sensors range
+*/
 boolean collisionDetection() {
     boolean collisionDetected = false;      // Set a flag to false
     digitalWrite(trigPin, LOW);             // Clears the trigPin
@@ -29,46 +40,78 @@ boolean collisionDetection() {
 }
 
 
+/*
+  Motor driver torque setting function
+  Must set the channel, and torque value
+
+  Channel 0 = Left Motor
+  Channel 1 = Right Motor
+  Torque values range from -255 to 255
+*/
+void setTorque(int channel, int value) {
+
+    // The line below sets up and sends the command string
+    // Ex: if the function is called like so - setTorque(0, 255)
+    //     this line will become "@0st255\r"
+    Serial1.print("@" + channel + "st" + value + "\r");
+    isMoving = true;
+
+    // If the power slew doesn't do what we want, we can put the for loop here to gradually
+    // decrease the torque values
+
+}
+
+
+/*
+    Arduino loop function
+    After setup and initialization this function runs continuously
+*/
 void loop() {
 
-    // If serial data is available on the RPi connection
-    if (Serial.available() > 0) {
-        piMsg = Serial.readStringUntil('\n');
-        Serial1.print(piMsg + '\r');
-        switch(piMsg[0]) {
-            case 'w':
-                isMoving = true;
+
+    if (Serial.available() > 0) {                       // If serial data is available on the RPi connection
+        piMsg = Serial.readStringUntil('\n');           // Read data from the RPi until newline character
+        switch(piMsg[0]) {                              // Handle all possible commands
+            case 'w':                                   // If w, move forward
+                setTorque(0, 255);                      // Set left channel torque to 255, go forward
+                setTorque(1, 255);                      // Set right channel torque to 255, go forward
                 break;
-            case 's':
-                isMoving = true;
+            case 's':                                   // If s, move backward
+                setTorque(0, -255);                     // Set left channel torque to -255, go backward
+                setTorque(1, -255);                     // Set right channel torque to -255, go backward
                 break;
-            case 'a':
-                isMoving = true;
+            case 'a':                                   // If a, move left
+                setTorque(0, -255);                     // Set left channel torque to -255, go backward
+                setTorque(1, 255);                      // Set right channel torque to 255, go forward
                 break;
-            case 'd':
-                isMoving = true;
+            case 'd':                                   // If d, move right
+                setTorque(0, 255);                      // Set left channel torque to 255, go forward
+                setTorque(1, -255);                     // Set right channel torque to -255, go backward
                 break;
-            default:
+            case 'x':                                   // If x, brake
+                setTorque(0, 0);                        // Set left channel torque to 0
+                setTorque(1, 0);                        // Set right channel torque to 0
+                break;
+            default:                                    // If any other characters come in, break out of switch
                 break;
         }
     }
 
-    // If serial data is available on the motor controller connection
-    if (Serial1.available() > 0) {
-        motorMsg = Serial1.readStringUntil('.');
-        Serial.print(motorMsg);
+
+    if (Serial1.available() > 0) {                      // If serial data is available on the motor controller connection
+        motorMsg = Serial1.readStringUntil('.');        // Read the data from Motor Controller until a period is received
+        Serial.print(motorMsg);                         // Print out the data to the RPi
     }
 
-    if (isMoving) {
-        if (collisionDetection()) {
 
-            // Here we could add some loop to gradually decrease the value to 0
-
-            Serial.print(255);        // If a collision is detected, print error code
-            Serial1.print("@0st0\r");
-            Serial1.print("@1st0\r");
-            isMoving = false;
+    if (isMoving) {                                     // If we are moving, we need to check for collision
+        if (collisionDetection()) {                     // If collision returns true
+            Serial.print(255);                          // Print error code
+            setTorque(0, 0);                            // Set left channel torque to 0
+            setTorque(1, 0);                            // Set right channel torque to 0
+            isMoving = false;                           // Now we are stopped, set our boolean to false
         }
     }
-    
+
+
 }
