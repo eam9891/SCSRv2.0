@@ -59,6 +59,11 @@ void setTorque(int channel, int value) {
     // If the power slew doesn't do what we want, we can put the for loop here to gradually
     // decrease the torque values
 
+    /// OBI CHECK THIS
+    for (int i = 0; i < 255; i++) {
+        Serial.print(i);
+    }
+
 }
 
 
