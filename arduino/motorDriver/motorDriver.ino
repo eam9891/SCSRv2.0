@@ -53,7 +53,11 @@ void setTorque(int channel, int value) {
     // The line below sets up and sends the command string
     // Ex: if the function is called like so - setTorque(0, 255)
     //     this line will become "@0st255\r"
-    Serial1.print("@" + channel + "st" + value + "\r");
+    Serial1.print("@");
+    Serial1.print(channel);
+    Serial1.print(value);
+    Serial1.print("\r");
+
     isMoving = true;
 
     // If the power slew doesn't do what we want, we can put the for loop here to gradually
