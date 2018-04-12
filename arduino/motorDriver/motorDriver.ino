@@ -55,6 +55,7 @@ void setTorque(int channel, int value) {
     //     this line will become "@0st255\r"
     Serial1.print("@");
     Serial1.print(channel);
+    Serial1.print("st");
     Serial1.print(value);
     Serial1.print("\r");
 
