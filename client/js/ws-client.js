@@ -214,6 +214,7 @@ function movement(canMove) {
                 case 83: return move("s");
                 case 65: return move("a");
                 case 87: return move("w");
+                case 88: return move("x");
             }
 
         }

@@ -4,6 +4,7 @@ module.exports = function(server, webcam, config, chalk, shell) {
 
     var SerialPort = require("serialport");
     var serial = new SerialPort(config.serial.path, {baudRate : config.serial.baud});
+    var serial2 = new SerialPort(config.serial1.path, {baudRate : config.serial1.baud});
     //webcam = new webcam();
 
     // Array of active connections
@@ -73,11 +74,36 @@ module.exports = function(server, webcam, config, chalk, shell) {
 
                     break;
 
+                case "w":
+                    serial.write("@0st-75\r");
+                    serial.write("@1st75\r");
+                    break;
+
+                case "s":
+                    serial.write("@0st75\r");
+                    serial.write("@1st-75\r");
+                    break;
+
+                case "a":
+                    serial.write("@0st-75\r");
+                    serial.write("@1st-50\r");
+                    break;
+
+                case "d":
+                    serial.write("@0st50\r");
+                    serial.write("@1st75\r");
+                    break;
+
+                case "x":
+                    serial.write("@0st0\r");
+                    serial.write("@1st0\r");
+                    break;
+
                 // The default if no other commands are handled
                 // Write serial data to the Arduino
-                default:
-                    serial.write(data);
-                    break;
+                //default:
+                //    serial.write(data);
+                //    break;
             }
 
         });
@@ -114,7 +140,7 @@ module.exports = function(server, webcam, config, chalk, shell) {
 
     // This function is run anytime the serial port is opened
     serial.on('open', function() {
-        console.log("Opening serial connection to arduino...");
+        console.log("Opening serial connection to motor controller...");
     });
 
     // This function is run anytime the serial port connection encounters and error
@@ -124,8 +150,12 @@ module.exports = function(server, webcam, config, chalk, shell) {
     });
 
     // This function reads data that is available but keep the stream from entering "flowing mode"
-    serial.on('readable', function () {
-        var data = serial.read();
+    serial2.on('readable', function () {
+        var data = serial2.read();
+
+        serial.write("@0st0\r");
+        serial.write("@1st0\r");
+
         console.log('Serial Message: ' + data);
         broadcast(data, true);
     });

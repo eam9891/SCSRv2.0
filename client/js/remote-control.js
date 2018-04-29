@@ -73,7 +73,7 @@ function openWebSocket() {
         var data = ab2str(message.data);
 
         console.log(data);
-        if (data === '255↵') {
+        if (data === '255') {
             console.log("Writing error message");
             writeToScreen('<span style = "color: red;">Error Incoming Collision Detected!</span>', true);
         } else {
@@ -143,6 +143,7 @@ function movement(canMove) {
                 case 83: return move("s");
                 case 65: return move("a");
                 case 87: return move("w");
+                case 88: return move("x");
             }
 
         }
@@ -154,6 +155,7 @@ function movement(canMove) {
 
 // This will add a listener to the users browser and call our movement function whenever a key is pressed
 window.addEventListener("keydown", movement(true), false);
+
 
 // Send data through the websocket, and log it in the console
 function move(data) {

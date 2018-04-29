@@ -14,8 +14,9 @@ boolean isMoving = false;
 void setup() {
     pinMode(trigPin, OUTPUT);               // Sets the trigPin as an Output
     pinMode(echoPin, INPUT);                // Sets the echoPin as an Input
+    pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);                   // Setup serial communication with RPi
-    Serial1.begin(115200);                  // Setup serial communication with motor controller
+    Serial2.begin(115200);                  // Setup serial communication with motor controller
 }
 
 
@@ -53,21 +54,18 @@ void setTorque(int channel, int value) {
     // The line below sets up and sends the command string
     // Ex: if the function is called like so - setTorque(0, 255)
     //     this line will become "@0st255\r"
-    Serial1.print("@");
-    Serial1.print(channel);
-    Serial1.print("st");
-    Serial1.print(value);
-    Serial1.print("\r");
+    Serial3.print("@");
+    Serial3.print(channel);
+    Serial3.print("st");
+    Serial3.print(value);
+    Serial3.print("\r");
 
     isMoving = true;
 
     // If the power slew doesn't do what we want, we can put the for loop here to gradually
     // decrease the torque values
 
-    /// OBI CHECK THIS
-    for (int i = 0; i < 255; i++) {
-        Serial.print(i);
-    }
+    
 
 }
 
@@ -81,22 +79,23 @@ void loop() {
 
     if (Serial.available() > 0) {                       // If serial data is available on the RPi connection
         piMsg = Serial.readStringUntil('\n');           // Read data from the RPi until newline character
-        switch(piMsg[0]) {                              // Handle all possible commands
+        //Serial.print(piMsg);
+        /*switch(piMsg[0]) {                              // Handle all possible commands
             case 'w':                                   // If w, move forward
-                setTorque(0, 255);                      // Set left channel torque to 255, go forward
-                setTorque(1, 255);                      // Set right channel torque to 255, go forward
+                setTorque(0, -175);                      // Set left channel torque to 255, go forward
+                setTorque(1, 175);                      // Set right channel torque to 255, go forward
                 break;
             case 's':                                   // If s, move backward
-                setTorque(0, -255);                     // Set left channel torque to -255, go backward
-                setTorque(1, -255);                     // Set right channel torque to -255, go backward
+                setTorque(0, 175);                     // Set left channel torque to -255, go backward
+                setTorque(1, -175);                     // Set right channel torque to -255, go backward
                 break;
             case 'a':                                   // If a, move left
-                setTorque(0, -255);                     // Set left channel torque to -255, go backward
-                setTorque(1, 255);                      // Set right channel torque to 255, go forward
+                setTorque(0, -175);                     // Set left channel torque to -255, go backward
+                setTorque(1, -175);                      // Set right channel torque to 255, go forward
                 break;
             case 'd':                                   // If d, move right
-                setTorque(0, 255);                      // Set left channel torque to 255, go forward
-                setTorque(1, -255);                     // Set right channel torque to -255, go backward
+                setTorque(0, 175);                      // Set left channel torque to 255, go forward
+                setTorque(1, 175);                     // Set right channel torque to -255, go backward
                 break;
             case 'x':                                   // If x, brake
                 setTorque(0, 0);                        // Set left channel torque to 0
@@ -104,13 +103,18 @@ void loop() {
                 break;
             default:                                    // If any other characters come in, break out of switch
                 break;
-        }
+        }*/
+        Serial2.print(piMsg);
+        Serial2.print('\n');
     }
 
 
-    if (Serial1.available() > 0) {                      // If serial data is available on the motor controller connection
-        motorMsg = Serial1.readStringUntil('.');        // Read the data from Motor Controller until a period is received
+    if (Serial2.available() > 0) {                      // If serial data is available on the motor controller connection
+        digitalWrite(LED_BUILTIN, HIGH);
+        motorMsg = Serial2.readStringUntil('.');        // Read the data from Motor Controller until a period is received
         Serial.print(motorMsg);                         // Print out the data to the RPi
+        digitalWrite(LED_BUILTIN, LOW);
+        
     }
 
 
