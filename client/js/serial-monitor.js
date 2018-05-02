@@ -100,6 +100,7 @@ function openSerialMonitor() {
     });
 
 }
+
 function closeSerialMonitor(){
     if (socket !== null) {
         socket.close();
@@ -108,15 +109,18 @@ function closeSerialMonitor(){
     }
 
 }
+
 function reopenSerialMonitor() {
     closeSerialMonitor();
     openSerialMonitor();
 }
+
 function log(msg){
     logDiv.append(msg + "<br>");
     console.log(msg);
     logDiv.animate({scrollTop: logDiv.get(0).scrollHeight}, 2000);
 }
+
 function buffer2str(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
 }

@@ -121,6 +121,7 @@ module.exports = function(server, webcam, config, chalk, shell) {
 
     });
 
+
     function broadcast(data, stringify) {
         if (stringify) {
             for(myConnection in connections) {

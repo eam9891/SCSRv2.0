@@ -69,7 +69,6 @@ void setTorque(int channel, int value) {
 
 }
 
-
 /*
     Arduino loop function
     After setup and initialization this function runs continuously

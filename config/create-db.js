@@ -37,6 +37,7 @@ connection.query('\
 )');
 console.log('Success: Table Created');
 
+
 // Schema for our prompt, validates user input
 var schema = {
     properties: {

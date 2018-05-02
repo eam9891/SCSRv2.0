@@ -152,7 +152,6 @@ function movement(canMove) {
 }
 
 
-
 // This will add a listener to the users browser and call our movement function whenever a key is pressed
 window.addEventListener("keydown", movement(true), false);
 

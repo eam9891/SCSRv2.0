@@ -34,6 +34,7 @@ $('#uploadFile').click(function () {
 
 });
 
+
 $('#programArduino').click(function () {
     websocket.send("upload");
 });

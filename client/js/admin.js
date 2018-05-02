@@ -5,7 +5,6 @@
  */
 
 var dashboardBtn = $('#dashboard');
-
 var remoteControlBtn = $('#remoteControl');
 var remoteControlDiv = $('#rc-container');
 var dashboardDiv     = $('#dash-container');

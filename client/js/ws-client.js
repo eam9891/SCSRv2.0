@@ -162,6 +162,7 @@ function openWebSocket() {
     });
 }
 
+
 function closeWebSocket(){
     if (websocket !== null) {
         websocket.close();

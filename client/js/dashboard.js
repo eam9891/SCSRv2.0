@@ -45,9 +45,6 @@ function getStats() {
             });
         });
 
-
-
-
         // RAM Memory Statistics
         // ToDo: convert bytes into readable format
         $('#totalmem').html(data.totalmem);             // We have total ram

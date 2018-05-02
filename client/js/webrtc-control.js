@@ -4,6 +4,7 @@ var signalling_server_address = BASE_URL + ":8090";
 //var signalling_server_address = signalling_server_hostname + ':' + (location.port || (location.protocol === 'https:' ? 443 : 80));
 var isFirefox = typeof InstallTrigger !== 'undefined';// Firefox 1.0+
 
+
 addEventListener("DOMContentLoaded", function () {
     document.getElementById('signalling_server').value = signalling_server_address;
     var cast_not_allowed = !('MediaSource' in window) || location.protocol !== "https:";
