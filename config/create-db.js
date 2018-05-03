@@ -39,7 +39,7 @@ console.log('Success: Table Created');
 
 
 // Schema for our prompt, validates user input
-var schema = {
+/*var schema = {
     properties: {
         username: {
             description: "Enter a Username",
@@ -56,12 +56,12 @@ var schema = {
             required: true
         }
     }
-};
+};*/
 
 // Prompt user for two properties: username and password
-var username = "";
-var password = "";
-prompt.get(schema, function (err, result) {
+var username = "scsr";
+var password = "SCSR2018!";
+//prompt.get(schema, function (err, result) {
 
     // Store the values
     username = result.username;
@@ -75,6 +75,6 @@ prompt.get(schema, function (err, result) {
     console.log('Success: Default Admin Created');
 
     connection.end();
-});
+//});
 
 
