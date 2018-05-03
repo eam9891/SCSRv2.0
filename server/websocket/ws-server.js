@@ -75,23 +75,23 @@ module.exports = function(server, webcam, config, chalk, shell) {
                     break;
 
                 case "w":
-                    serial.write("@0st-75\r");
-                    serial.write("@1st75\r");
+                    serial.write("@0st-100\r");
+                    serial.write("@1st100\r");
                     break;
 
                 case "s":
-                    serial.write("@0st75\r");
-                    serial.write("@1st-75\r");
+                    serial.write("@0st100\r");
+                    serial.write("@1st-100\r");
                     break;
 
                 case "a":
-                    serial.write("@0st-75\r");
-                    serial.write("@1st-50\r");
+                    serial.write("@0st-100\r");
+                    serial.write("@1st-100\r");
                     break;
 
                 case "d":
-                    serial.write("@0st50\r");
-                    serial.write("@1st75\r");
+                    serial.write("@0st100\r");
+                    serial.write("@1st100\r");
                     break;
 
                 case "x":
