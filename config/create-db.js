@@ -64,8 +64,8 @@ var password = "SCSR2018!";
 //prompt.get(schema, function (err, result) {
 
     // Store the values
-    username = result.username;
-    password = result.password;
+    //username = result.username;
+    //password = result.password;
 
     // Create the default administrator account with the supplied credentials
     // Hash the password before sending so it is stored securely
