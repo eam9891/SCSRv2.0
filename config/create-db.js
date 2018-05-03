@@ -74,7 +74,7 @@ var password = "SCSR2018!";
     connection.query(insertQuery,[username, bcrypt.hashSync(password, null, null), "admin"]);
     console.log('Success: Default Admin Created');
 
-    connection.end();
+    //connection.end();
 //});
 
 
