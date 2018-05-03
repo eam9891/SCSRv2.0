@@ -39,7 +39,7 @@ console.log('Success: Table Created');
 
 
 // Schema for our prompt, validates user input
-/*var schema = {
+var schema = {
     properties: {
         username: {
             description: "Enter a Username",
@@ -56,25 +56,25 @@ console.log('Success: Table Created');
             required: true
         }
     }
-};*/
+};
 
 // Prompt user for two properties: username and password
-var username = "scsr";
-var password = "SCSR2018!";
-//prompt.get(schema, function (err, result) {
+var un = "";
+var pw = "";
+prompt.get(schema, function (err, result) {
 
     // Store the values
-    //username = result.username;
-    //password = result.password;
+    un = result.username;
+    pw = result.password;
 
     // Create the default administrator account with the supplied credentials
     // Hash the password before sending so it is stored securely
     console.log('Creating default admin ...');
     var insertQuery = "INSERT INTO users ( username, password, role ) values (?, ?, ?)";
-    connection.query(insertQuery,[username, bcrypt.hashSync(password, null, null), "admin"]);
+    connection.query(insertQuery,[un, bcrypt.hashSync(pw, null, null), "admin"]);
     console.log('Success: Default Admin Created');
 
-    //connection.end();
-//});
+    connection.end();
+});
 
 
