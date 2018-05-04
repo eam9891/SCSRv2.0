@@ -1,8 +1,7 @@
-module.exports = function(server, webcam, config, chalk, shell) {
+module.exports = function(server, webcam, config, chalk, shell, SerialPort) {
 
     var uploading = false;
 
-    var SerialPort = require("serialport");
     var serial = new SerialPort(config.serial.path, {baudRate : config.serial.baud});
     var serial2 = new SerialPort(config.serial1.path, {baudRate : config.serial1.baud});
     //webcam = new webcam();
@@ -34,7 +33,7 @@ module.exports = function(server, webcam, config, chalk, shell) {
             // Handle possible commands
             switch (data) {
 
-                // A future possibility, check out avrgirl-arduino
+                // Remote upload and program Arduino
                 case "upload":
                     client.send('{"type":"String","uploadCmd":"Upload received, starting compile process..."}');
                     programArduino();

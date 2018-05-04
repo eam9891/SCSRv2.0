@@ -90,6 +90,8 @@ function openWebSocket() {
         //console.log(evt);
         var message = JSON.parse(evt.data);
         //console.log(message);
+
+
         if(message.users) {
             log("Getting IPs...");
             log("Connection" + message.users);
@@ -102,12 +104,12 @@ function openWebSocket() {
             var data = ab2str(message.data);
             log(data);
             console.log(data);
-            if (data === '255') {
+            if (data === 'z') {
                 console.log("Writing error message");
                 writeToScreen('<span style = "color: red;">Error Incoming Collision Detected!</span>', true);
                 log('<span style = "color: red;">Error Incoming Collision Detected!</span>');
             } else {
-                //writeToScreen('<span style = "color: blue;">RECEIVE: ' + data + '</span>');
+                //writeToScreen('<span>RECEIVE: ' + data + '</span>');
             }
         }
 

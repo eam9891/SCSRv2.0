@@ -4,7 +4,7 @@
  * and insert a default administrator into the users table provided a valid username and password.
  * All passwords are encrypted with the bcrypt hashing algorithm.
  */
-var mysql = require('mariasql');
+var mysql = require('mysql');
 var dbconfig = require('./database');
 var bcrypt = require('bcrypt-nodejs');
 var prompt = require('prompt');
@@ -14,17 +14,31 @@ prompt.start();
 
 // Connect to MySQL
 console.log('Connecting to mysql ...');
-var connection = new mysql(dbconfig.connection);
+const connection = mysql.createConnection(dbconfig.connection);
+connection.connect(function(error) {
+    if (error) console.log(error);
+
+});
+console.log("Connected!");
 
 // Create a new database with the name from database.js config file
 console.log('Creating new database "' + dbconfig.database + '"...');
-connection.query('CREATE DATABASE ' + dbconfig.database);
+//connection.query('CREATE DATABASE ' + dbconfig.database);
+connection.query('CREATE DATABASE ' + dbconfig.database, function (error) {
+    if (error) console.log(error);
+});
 console.log('Success: Database Created');
+
+// Use the new database
+connection.query('USE ' + dbconfig.database, function (error) {
+    if (error) console.log(error);
+});
+
 
 // Create a users table with the name from database.js config file
 // This table will be inserted into the previously create database
 console.log('Creating new table "' + dbconfig.users_table + '"...');
-connection.query('USE ' + dbconfig.database);
+
 connection.query('\
     CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, \
@@ -34,7 +48,9 @@ connection.query('\
     `role` CHAR(60), \
     UNIQUE INDEX `id_UNIQUE` (`id` ASC), \
     UNIQUE INDEX `username_UNIQUE` (`username` ASC) \
-)');
+)', function (error) {
+    if (error) console.log(error);
+});
 console.log('Success: Table Created');
 
 
@@ -71,10 +87,12 @@ prompt.get(schema, function (err, result) {
     // Hash the password before sending so it is stored securely
     console.log('Creating default admin ...');
     var insertQuery = "INSERT INTO users ( username, password, role ) values (?, ?, ?)";
-    connection.query(insertQuery,[un, bcrypt.hashSync(pw, null, null), "admin"]);
+    connection.query(insertQuery,[un, bcrypt.hashSync(pw, null, null), "admin"], function (error) {
+        if (error) console.log(error);
+    });
     console.log('Success: Default Admin Created');
 
     connection.end();
 });
 
-
+return true;

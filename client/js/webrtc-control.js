@@ -1,3 +1,8 @@
+/**
+ * This script is taken from the UV4L software.
+ * It showcases WebRTC control and signalling for
+ * remote video calling with audio.
+ */
 
 var signalling_server_hostname = BASE_URL;
 var signalling_server_address = BASE_URL + ":8090";

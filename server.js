@@ -7,7 +7,7 @@
  */
 
 
-/** Set up all node_modules */
+/** Set up all node_modules / dependencies */
 const session      = require('express-session');              //
 const cookieParser = require('cookie-parser');                //
 const bodyParser   = require('body-parser');                  //
@@ -21,6 +21,7 @@ const bcrypt       = require('bcrypt-nodejs');
 const sql          = require('mysql');
 const shell        = require('shelljs');
 const webcam       = require('./server/webcam/webcam')(shell);
+const SerialPort   = require("serialport");
 
 /** Get all configuration files */
 const config       = require('./config/server-config');       // Main Configuration File
@@ -87,7 +88,8 @@ require('./server/http/upload-route.js')(server);
 
 
 /** Load SerialPort WebSocket server route */
-require('./server/websocket/ws-server.js')(server, webcam, config, chalk, shell);
+require('./server/websocket/ws-server.js')(server, webcam, config, chalk, shell, SerialPort);
+
 
 
 /** Launch the server */
