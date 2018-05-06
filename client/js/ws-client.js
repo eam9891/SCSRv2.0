@@ -104,7 +104,7 @@ function openWebSocket() {
             var data = ab2str(message.data);
             log(data);
             console.log(data);
-            if (data === 'z') {
+            if (data === "z") {
                 console.log("Writing error message");
                 writeToScreen('<span style = "color: red;">Error Incoming Collision Detected!</span>', true);
                 log('<span style = "color: red;">Error Incoming Collision Detected!</span>');

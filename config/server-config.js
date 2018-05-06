@@ -1,6 +1,6 @@
 module.exports = {
     server: {
-        host: '137.49.183.232',
+        host: '192.168.1.122',
         port: process.env.PORT || 80
     },
     serial: {
