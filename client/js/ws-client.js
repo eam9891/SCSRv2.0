@@ -1,16 +1,14 @@
-var host = "ws://" + BASE_URL + ":" + WS_PORT;
+var host             = "ws://" + BASE_URL + ":" + WS_PORT;
 var output           = $("#output");
 var stopCam          = $('#stopCam');
 var startCam         = $('#startCam');
 var restartCam       = $('#restartCam');
 var castLocalCam     = $('#cast_camera');
-var websocket;
-
-var logDiv = $("#log");
-var eTerminal = $(".eTerminal");
+var logDiv           = $("#log");
+var eTerminal        = $(".eTerminal");
 var serialMonitorBtn = $('#serialMonitor');
-var consoleDiv = $("#console");
-
+var consoleDiv       = $("#console");
+var websocket;
 
 consoleDiv.dialog({
     autoOpen: false,
@@ -23,12 +21,11 @@ consoleDiv.on("dialogbeforeclose", function() {
     serialMonitorBtn.removeClass("active");
 });
 
-
+// Serial Monitor button click handler
 serialMonitorBtn.click(function() {
     consoleDiv.dialog("open");
     serialMonitorBtn.addClass("active");
 });
-
 
 // Dashboard button click handler
 dashboardBtn.click(function () {
@@ -78,7 +75,6 @@ function openWebSocket() {
         websocket.send("cam-start");
         log("<span class='text-success'>Status " + this.readyState + ': WebSocket Connected</span>');
         //refreshStream();
-
     };
 
     websocket.onmessage = function(evt) {
@@ -90,7 +86,6 @@ function openWebSocket() {
         //console.log(evt);
         var message = JSON.parse(evt.data);
         //console.log(message);
-
 
         if(message.users) {
             log("Getting IPs...");
@@ -112,10 +107,6 @@ function openWebSocket() {
                 //writeToScreen('<span>RECEIVE: ' + data + '</span>');
             }
         }
-
-
-
-
     };
 
     websocket.onerror = function(evt) {

@@ -34,12 +34,18 @@
     * `sudo nano database.js` <br />
     Enter the database connection credentials that were created during the Installation process.
 
-2. Connect the RapsberryPi to a Wireless Network and obtain an IP Address.
+2. Create the database, users table, and default administrator account
+    * `cd SCSRv2.0/config` <br />
+    * `node create-db.js` <br />
+    Note: This script will prompt you for a username and password to become the default administrator account.
+    This is the account used to log into the SCSR Web Application.
+
+3. Connect the RapsberryPi to a Wireless Network and obtain an IP Address.
     * `cd SCSRv2.0/config` <br />
     * `sudo nano server-config.js` <br />
     Enter the IP Address in the "host" field.
     
-3. Start the server
+4. Start the server
     * `cd SCSRv2.0`
     * `sudo node server.js` <br />
     

@@ -1,9 +1,7 @@
 module.exports = function(server, webcam, config, chalk, shell) {
 
     var SerialPort   = require("serialport");
-
     var uploading = false;
-
     var serial = new SerialPort(config.serial.path, {baudRate : config.serial.baud});
     var serial2 = new SerialPort(config.serial1.path, {baudRate : config.serial1.baud});
     //webcam = new webcam();
@@ -68,11 +66,9 @@ module.exports = function(server, webcam, config, chalk, shell) {
                     serial.close(function (error) {
                         console.log(error);
                     });
-
                     setTimeout(function () {
                         webcam.start();
                     }, 1000);
-
                     break;
 
                 case "w":
@@ -100,11 +96,6 @@ module.exports = function(server, webcam, config, chalk, shell) {
                     serial.write("@1st0\r");
                     break;
 
-                // The default if no other commands are handled
-                // Write serial data to the Arduino
-                //default:
-                //    serial.write(data);
-                //    break;
             }
 
         });
@@ -135,8 +126,6 @@ module.exports = function(server, webcam, config, chalk, shell) {
                 //connections[myConnection].send(data);
             }
         }
-
-
     }
 
 
@@ -191,8 +180,5 @@ module.exports = function(server, webcam, config, chalk, shell) {
         }, 2000);
         uploading = false;
     }
-
-
-
 
 };

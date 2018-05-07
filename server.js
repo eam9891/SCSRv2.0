@@ -6,7 +6,6 @@
  *
  */
 
-
 /** Set up all node_modules / dependencies */
 const session      = require('express-session');              //
 const cookieParser = require('cookie-parser');                //
@@ -22,22 +21,18 @@ const sql          = require('mysql');
 const shell        = require('shelljs');
 const webcam       = require('./server/webcam/webcam')(shell);
 
-
 /** Get all configuration files */
 const config       = require('./config/server-config');       // Main Configuration File
-const db_config    = require('./config/database');
-
+const db_config    = require('./config/database');            // Database Configuration File
 
 /** Set up http and websocket server */
-const express      = require('express');                      //
+const express      = require('express');
 const server       = express();
 const fileUpload   = require('express-fileupload');
 const port         = config.server.port;
 require('express-ws')(server);
 
-
 /** Set up database connection objects */
-//var sql = require('mariasql');
 const mysql = sql.createConnection(db_config.connection);
 mysql.connect(function(error) {
     if (error) console.log(error);
@@ -47,12 +42,9 @@ mysql.connect(function(error) {
     });
 });
 
-
-
 /** Set up passport and local strategy objects */
 const LocalStrategy = require('passport-local').Strategy;
 require('./config/passport')(passport, mysql, bcrypt, LocalStrategy); // Passport config, pass in dependencies
-
 
 /** Set up our express application */
 server.use(morgan('dev'));                                  // Log every request to the console
@@ -75,7 +67,6 @@ server.use(express.static(__dirname + '/client/js'));       // Set a static path
 server.use(express.static(__dirname + '/client/public'));   // Set a static path for client side libraries
 server.set('views', path.join(__dirname, '/client/views')); // Set the views path
 
-
 /** Load all HTTP server routes */
 require('./server/http/default-route.js')(server);
 require('./server/http/login-route.js')(server, passport);
@@ -86,11 +77,8 @@ require('./server/http/profile-route.js')(server);
 require('./server/http/dashboard-route.js')(server, passport, os);
 require('./server/http/upload-route.js')(server);
 
-
 /** Load SerialPort WebSocket server route */
 require('./server/websocket/ws-server.js')(server, webcam, config, chalk, shell);
-
-
 
 /** Launch the server */
 server.listen(port);
